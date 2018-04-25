@@ -1,0 +1,19 @@
+{
+  "name": "youtube-parse-history",
+  "version": "1.0.0",
+  "description": "Soon",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adyz/youtube-parse-history.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adyz/youtube-parse-history/issues"
+  },
+  "homepage": "https://github.com/adyz/youtube-parse-history#readme"
+}
