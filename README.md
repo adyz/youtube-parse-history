@@ -1,3 +1,3 @@
 # youtube-parse-history
 
-Soon
+Upload your watch-history.html here: https://adyz.github.io/youtube-parse-history/
