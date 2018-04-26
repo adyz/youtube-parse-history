@@ -1,12 +1,15 @@
 function getElements(html){
     let textArr = []
-
-    $(html).find('a').each(function(i, elem) {
+    // console.log('htmlToDom', html);
+    var htmlObject = document.createElement('div');
+    htmlObject.innerHTML = html;
+    const list = htmlObject.querySelectorAll('a');
+    list.forEach(function(val, i){
         textArr[i] = {
-            name: $(this).text(),
-            url: $(this).attr('href')
+            name: val.innerText,
+            url: val.getAttribute("href")
         };
-    });
+    })
 
     return textArr;
 }
@@ -33,35 +36,48 @@ function groupByViews(arr){
 
 console.log('Ready');
 
+const loading = document.getElementById('loading');
+const loading_dots = document.getElementById('loading-dots');
+
+function repeatOften() {
+    if(loading_dots.innerText.length > 2) {
+        loading_dots.innerText = '.'
+    } else {
+        loading_dots.innerText = loading_dots.innerText + '.';
+    }
+    requestAnimationFrame(repeatOften);
+}
+requestAnimationFrame(repeatOften);
 
 function handleFileSelect(evt) {
-    const files = evt.target.files; // FileList object
+
+    //Show loading
+    loading.style.display = 'block';
     
-    //get the first
-    const file = files[0];
-    console.log('file', file);
 
-    var reader = new FileReader();
+    //Create uploaded file reader
+    const reader = new FileReader();
 
-
-
+    //File loaded
     reader.onload = function(){
-        var html = reader.result;
-        var outputArea = document.getElementById('content');
-        let elementsArray = getElements(html);
-        let groupObject = groupByViews(elementsArray);
-        let sort = _.groupBy(groupObject, 'count');
+        const html = reader.result;
+        const elementsArray = getElements(html);
+        const groupObject = groupByViews(elementsArray);
+        const sort = _.groupBy(groupObject, 'count');
         const final = _.toArray(sort).reverse();
-        let stringJSON = JSON.stringify(final);
-        outputArea.innerText = JSON.stringify(final, null, 4);
-        console.log('Done');
 
-        var data = "text/json;charset=utf-8," + encodeURIComponent(stringJSON);
+        //Show the JSON
+        document.getElementById('content').innerText = JSON.stringify(final, null, 4);
 
         //Show donwload link
-        document.getElementById('download').innerHTML = '<a href="data:' + data + '" download="data.json">download JSON</a>';
+        document.getElementById('download').innerHTML = '<a href="data:' + "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(final)) + '" download="data.json">download JSON</a>';
+
+        //Hide loading
+        loading.style.display = 'none';
     };
 
+    //Read the file
+    const file = evt.target.files[0];
     reader.readAsText(file);
 
     
