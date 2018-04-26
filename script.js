@@ -35,19 +35,7 @@ function groupByViews(arr){
 }
 
 console.log('Ready');
-
 const loading = document.getElementById('loading');
-const loading_dots = document.getElementById('loading-dots');
-
-function repeatOften() {
-    if(loading_dots.innerText.length > 2) {
-        loading_dots.innerText = '.'
-    } else {
-        loading_dots.innerText = loading_dots.innerText + '.';
-    }
-    requestAnimationFrame(repeatOften);
-}
-requestAnimationFrame(repeatOften);
 
 function handleFileSelect(evt) {
 
@@ -66,11 +54,25 @@ function handleFileSelect(evt) {
         const sort = _.groupBy(groupObject, 'count');
         const final = _.toArray(sort).reverse();
 
+        let superFinal = [];
+        final.forEach(function(finalArrayWithItems){
+            finalArrayWithItems.forEach(function(item){
+                const newItem = {
+                    count: item.count,
+                    name: item.name.name,
+                    url: item.name.url
+                };
+                superFinal.push(newItem);
+            })
+        });
+
+        //console.table(superFinal);
+
         //Show the JSON
-        document.getElementById('content').innerText = JSON.stringify(final, null, 4);
+        document.getElementById('content').innerText = JSON.stringify(superFinal, null, 4);
 
         //Show donwload link
-        document.getElementById('download').innerHTML = '<a href="data:' + "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(final)) + '" download="data.json">download JSON</a>';
+        document.getElementById('download').innerHTML = '<a href="data:' + "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(superFinal)) + '" download="data.json">download JSON</a>';
 
         //Hide loading
         loading.style.display = 'none';
@@ -83,4 +85,5 @@ function handleFileSelect(evt) {
     
 }
 
-  document.getElementById('file-input').addEventListener('change', handleFileSelect, false);
+// Listen when a file is uploaded
+document.getElementById('file-input').addEventListener('change', handleFileSelect, false);
